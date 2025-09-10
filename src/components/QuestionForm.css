@@ -1,0 +1,15 @@
+.ant-form-item-label{
+	display:flex;
+	justify-content:flex-end;
+	line-height:16px;
+	label{
+		white-space:normal;
+		text-align:right;
+		color:#8a8a8a;
+		padding-right:32px;
+		font-size:14px;
+		&:after{
+			content:none!important;
+		}
+	}
+}

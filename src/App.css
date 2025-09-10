@@ -2,6 +2,10 @@
   text-align: center;
 }
 
+.ant-layout-header{
+  background-color: #7dbcea;
+}
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;
@@ -21,7 +25,7 @@
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
-  color: white;
+  color: gray;
 }
 
 .App-link {

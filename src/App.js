@@ -1,24 +1,180 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import { Layout, Card, Button, Space, message, Modal } from 'antd';
+import { ArrowLeftOutlined, ArrowRightOutlined, CheckOutlined } from '@ant-design/icons';
+import StepIndicator from './components/StepIndicator.tsx';
+import PersonalInfoStep from './components/PersonalInfoStep.tsx';
+import MedicalHistoryStep from './components/MedicalHistoryStep.tsx';
+import LifestyleInfoStep from './components/LifestyleInfoStep.tsx';
+import ConsultationInfoStep from './components/ConsultationInfoStep.tsx';
+import FormSummary from './components/FormSummary.tsx';
+import { useFormData } from './hooks/useFormData.ts';
+import { validateCurrentStep } from './utils/validation.ts';
+import 'antd/dist/reset.css';
+
+const { Header, Content, Footer } = Layout;
 
 function App() {
+
+
+  const [currentStep, setCurrentStep] = useState(0);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const [messageApi,contextHolder] = message.useMessage();
+  const {
+    formData,
+    updatePersonalInfo,
+    updateMedicalHistory,
+    updateLifestyleInfo,
+    updateConsultationInfo,
+    clearFormData
+  } = useFormData();
+
+  const steps = [
+    {
+      component: (
+        <PersonalInfoStep 
+          data={formData.personalInfo} 
+          onDataChange={updatePersonalInfo} 
+        />
+      )
+    },
+    {
+      component: (
+        <MedicalHistoryStep 
+          data={formData} 
+          onDataChange={updateMedicalHistory} 
+        />
+      )
+    },
+    {
+      component: (
+        <LifestyleInfoStep 
+          data={formData.lifestyleInfo} 
+          onDataChange={updateLifestyleInfo} 
+        />
+      )
+    },
+    {
+      component: (
+        <FormSummary 
+          data={formData} 
+          onEdit={setCurrentStep}
+          onSubmit={handleSubmit}
+        />
+      )
+    }
+  ];
+
+  const handleNext = () => {
+    const errors = validateCurrentStep(currentStep, formData);
+    
+    if (errors.length > 0) {
+      messageApi.error(errors[0]);
+      return;
+    }
+
+    if (currentStep < steps.length - 1) {
+      setCurrentStep(currentStep + 1);
+      messageApi.success('步骤'+ (currentStep+1)+ '完成');
+    }
+  };
+
+  const handlePrevious = () => {
+    if (currentStep > 0) {
+      setCurrentStep(currentStep - 1);
+    }
+  };
+
+  async function handleSubmit() {
+    const allErrors: string[] = [];
+    
+    // Validate all steps
+    for (let i = 0; i < 3; i++) {
+      const stepErrors = validateCurrentStep(i, formData);
+      allErrors.push(...stepErrors);
+    }
+
+    if (allErrors.length > 0) {
+      messageApi.error('请填写所有必填字段');
+      return;
+    }
+
+    setIsSubmitting(true);
+    
+    try {
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      Modal.success({
+        title: '提交成功!',
+        content: '您的信息已提交成功. ',
+        onOk: () => {
+          clearFormData();
+          setCurrentStep(0);
+        }
+      });
+      
+      messageApi.success('您的信息已提交成功!');
+    } catch (error) {
+      messageApi.error('提交失败. 请重试.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Layout className="min-h-screen text-gray-600">
+      <Header className="text-gray-600 shadow-sm border-b" style={{backgroundColor:"#aaaaaa"}}>
+        <div className="max-w-6xl mx-auto px-4 ">
+          <h1 className="text-xl font-semibold text-gray-200 leading-16">
+            信息采集单
+          </h1>
+        </div>
+      </Header>
+
+      <Content className="flex-1 py-8 px-4">
+        <div className="max-w-6xl mx-auto">
+          {currentStep < 3 && <StepIndicator current={currentStep} />}
+
+          
+          <Card className="shadow-lg border-0 rounded-lg overflow-hidden">
+            <div className="min-h-[600px]">
+
+              {steps[currentStep].component}
+              {contextHolder}
+            </div>
+            
+            {currentStep < 3 && (
+              <div className="flex justify-between pt-6 mt-6 border-t border-gray-200">
+                <Button
+                  size="large"
+                  onClick={handlePrevious}
+                  disabled={currentStep === 0}
+                  icon={<ArrowLeftOutlined />}
+                >
+                  上一步
+                </Button>
+                
+                <Button
+                  type="primary"
+                  size="large"
+                  onClick={handleNext}
+                  icon={currentStep === 2 ? <CheckOutlined /> : <ArrowRightOutlined />}
+                >
+                  {currentStep === 2 ? '检查' : '下一步'}
+                </Button>
+              </div>
+            )}
+          </Card>
+        </div>
+      </Content>
+
+      <Footer className="text-center bg-white border-t">
+        <div className="text-gray-600">
+          信息采集单 © 2025 - 安全 & 保密
+        </div>
+      </Footer>
+    </Layout>
   );
 }
 
