@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/doctorlee/static/css/main.0fbccb6f.css",
+    "main.js": "/doctorlee/static/js/main.afbdab25.js",
+    "static/js/453.1be3888b.chunk.js": "/doctorlee/static/js/453.1be3888b.chunk.js",
+    "index.html": "/doctorlee/index.html",
+    "main.0fbccb6f.css.map": "/doctorlee/static/css/main.0fbccb6f.css.map",
+    "main.afbdab25.js.map": "/doctorlee/static/js/main.afbdab25.js.map",
+    "453.1be3888b.chunk.js.map": "/doctorlee/static/js/453.1be3888b.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.0fbccb6f.css",
+    "static/js/main.afbdab25.js"
+  ]
+}
