@@ -9,9 +9,11 @@ const DynamicSelect = ({initialOptions,onChange, style})=>{
 	const handleInputChange = (e)=>{
 		setInputValue(e.target.value);
 	};
-	const handleSelectChange = (e)=>{
-		setInputValue(e.value);
+	const handleSelectChange = (value)=>{
+		setInputValue(value);
+		onChange(value);
 	};
+
 
 	const makeOptions=(list)=>{
 		for (var item of list){
@@ -27,7 +29,6 @@ const DynamicSelect = ({initialOptions,onChange, style})=>{
 		const newOption = inputValue.trim();
 		setOptions(options.concat(newOption));
 		makeOptions(options)
-		setInputValue('');
 
 	};
 
@@ -43,12 +44,11 @@ const DynamicSelect = ({initialOptions,onChange, style})=>{
 			<Space>
 				<Input
 					placeholder='其他'
-					value={inputValue}
 					onChange={handleInputChange}
 					style={{width:200}}
 				/>
 				<Button type="primary" onClick={handleAddOption}>
-					添加选项
+					添加
 				</Button>
 			</Space>
 			

@@ -13,6 +13,7 @@ const MedicalHistoryStep: React.FC<MedicalHistoryStepProps> = ({ data, onDataCha
   data=data.medicalHistory;
   const handleFieldChange = (field: keyof MedicalHistory, value: string) => {
     onDataChange({ [field]: value });
+    alert(JSON.stringify({ [field]: value }));
   };
 
   const illHistoryOptions = ['无','高血压', '心脏搭桥手术', '高血脂','高血糖','多次流产','前列腺手术','痔疮手术','剖腹产'];
@@ -98,7 +99,7 @@ const MedicalHistoryStep: React.FC<MedicalHistoryStepProps> = ({ data, onDataCha
             <Form.Item label="冷热情况？">
               <Radio.Group
                 
-                default={data.coldOrHot}
+                value={data.coldOrHot}
                 options={[
                   {value:"怕冷",label:"怕冷"},
                   {value:"怕热",label:"怕热"},
@@ -247,7 +248,7 @@ const MedicalHistoryStep: React.FC<MedicalHistoryStepProps> = ({ data, onDataCha
           <Row gutter={16}>
             <Col xs={24} md={12}>
               <Form.Item label="疼痛部位:">
-                <Checkbox.Group options={painPartOptions} defaultValue={[]} onChange={(value) => handleFieldChange('painPart', value)} />             
+                <Checkbox.Group options={painPartOptions} Value={data.painPart} onChange={(value) => handleFieldChange('painPart', value)} />             
               </Form.Item>
             </Col>
             <Col xs={24} md={12}>
@@ -272,7 +273,7 @@ const MedicalHistoryStep: React.FC<MedicalHistoryStepProps> = ({ data, onDataCha
           <Row gutter={16}>
             <Col xs={24} md={12}>
               <Form.Item label="痛感类型:">
-                <Checkbox.Group options={painKindOptions} defaultValue={[]} onChange={(value) => handleFieldChange('painKind', value)} />             
+                <Checkbox.Group options={painKindOptions} value={data.painKind} onChange={(value) => handleFieldChange('painKind', value)} />             
               </Form.Item>
             </Col>
           </Row>
@@ -434,6 +435,7 @@ const MedicalHistoryStep: React.FC<MedicalHistoryStepProps> = ({ data, onDataCha
               <Form.Item label="口中感觉:">
                 <Select 
                     onChange={(value) => handleFieldChange('mouthFeeling', value)} 
+                    value={data.mouthFeeling}
                   >
                     <Option value="口干">口干</Option>
                     <Option value="口苦">口苦</Option>
@@ -525,13 +527,6 @@ const MedicalHistoryStep: React.FC<MedicalHistoryStepProps> = ({ data, onDataCha
           <Row gutter={16}>
             <Col xs={24} md={4}>
               <Form.Item label="小便">
-              <Select 
-                    onChange={(value) => handleFieldChange('peeMoreOrLess', value)} 
-                  >
-                    <Option value="多">多</Option>
-                    <Option value="少">少</Option>
-
-                </Select>
                 <Radio.Group 
                     value={data.peeMoreOrLess}
                     onChange={(e) => handleFieldChange('peeMoreOrLess', e.target.value)} 
@@ -735,7 +730,7 @@ const MedicalHistoryStep: React.FC<MedicalHistoryStepProps> = ({ data, onDataCha
             <Col xs={24} md={4}>
               <Form.Item label="颜色:">
                 <DynamicSelect 
-                    onChange={(value) => handleFieldChange('menstruationColor', value)} 
+                    onChange={(value) => handleFieldChange('menstruationColor',value)} 
                     initialOptions={['深红','黯暗','鲜红','淡红','浓稠','清稀']}
                   >
                 </DynamicSelect>
