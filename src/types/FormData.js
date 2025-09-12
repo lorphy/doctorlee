@@ -51,7 +51,6 @@ export interface MedicalHistory {
   shitShape:'正常'|'不成形'|'偏干'|'偏稀'|'先干后稀';
   shitColor:string;
   peeMoreOrLess:'多'|'少';
-  menstruationPain:
   peeSymptom:[];
   peeTimes:number;
   peeColor:string;
@@ -87,18 +86,8 @@ export interface LifestyleInfo {
   sleepQuality:[];
 }
 
-// export interface ConsultationInfo {
-//   consultationType: 'initial' | 'followup' | 'emergency';
-//   preferredDate: string;
-//   preferredTime: string;
-//   consultationMethod: 'inPerson' | 'video' | 'phone';
-//   urgencyLevel: 'low' | 'medium' | 'high';
-  
-// }
-
 export interface FormData {
   personalInfo: PersonalInfo;
   medicalHistory: MedicalHistory;
   lifestyleInfo: LifestyleInfo;
-  //consultationInfo: ConsultationInfo;
 }
