@@ -1,15 +1,37 @@
 import React, { useState } from 'react';
-import { Layout, Card, Button, Space, message, Modal } from 'antd';
-import { ArrowLeftOutlined, ArrowRightOutlined, CheckOutlined } from '@ant-design/icons';
+import { Layout, Card, Button, Space, message, Menu} from 'antd';
+import { ArrowLeftOutlined, ArrowRightOutlined, CheckOutlined, BankOutlined,DatabaseOutlined} from '@ant-design/icons';
 import StepIndicator from './components/StepIndicator.tsx';
 import PersonalInfoStep from './components/PersonalInfoStep.tsx';
 import MedicalHistoryStep from './components/MedicalHistoryStep.tsx';
 import LifestyleInfoStep from './components/LifestyleInfoStep.tsx';
-import ConsultationInfoStep from './components/ConsultationInfoStep.tsx';
+import PatientList from './components/PatientList.tsx';
 import FormSummary from './components/FormSummary.tsx';
 import { useFormData } from './hooks/useFormData.ts';
 import { validateCurrentStep } from './utils/validation.ts';
 import 'antd/dist/reset.css';
+import axios from './components/axios.js';
+import type {MenuProps} from 'antd';
+
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+
+const Home = () => <h2>Home</h2>;
+const list = () => <h2>List</h2>;
+const NotFound = () => <h2>404 Not Found</h2>;
+
+type MenuItem = Required<MenuProps>['items'][number];
+const items:MenuItem[] = [
+  {
+    label:(<a href="/">首页</a>),
+    key:'home',
+    icon:<BankOutlined />
+  },
+  {
+    label:(<a href="/list">列出患者清单</a>),
+    key:'list',
+    icon:<DatabaseOutlined />
+  },
+];
 
 const { Header, Content, Footer } = Layout;
 
@@ -85,7 +107,7 @@ function App() {
     }
   };
 
-  async function handleSubmit() {
+  async function handleSubmit(e) {
     const allErrors: string[] = [];
     
     // Validate all steps
@@ -98,23 +120,23 @@ function App() {
       messageApi.error('请填写所有必填字段');
       return;
     }
-
+    
     setIsSubmitting(true);
     
+    let action_target = '';
+    e==='submit'?action_target='/answer':action_target='/update_answer';
+    alert(action_target);
     try {
       // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      //await new Promise(resolve => setTimeout(resolve, 2000));
       
-      Modal.success({
-        title: '提交成功!',
-        content: '您的信息已提交成功. ',
-        onOk: () => {
-          clearFormData();
-          setCurrentStep(0);
-        }
-      });
+
+
+      const req = await axios.post(action_target,formData);
       
       messageApi.success('您的信息已提交成功!');
+      clearFormData();
+      setCurrentStep(0);
     } catch (error) {
       messageApi.error('提交失败. 请重试.');
     } finally {
@@ -124,6 +146,7 @@ function App() {
 
   return (
     <Layout className="min-h-screen text-gray-600">
+      <Menu mode="horizontal" items={items}/>
       <Header className="text-gray-600 shadow-sm border-b" style={{backgroundColor:"#aaaaaa"}}>
         <div className="max-w-6xl mx-auto px-4 ">
           <h1 className="text-xl font-semibold text-gray-200 leading-16">
@@ -131,6 +154,7 @@ function App() {
           </h1>
         </div>
       </Header>
+      
 
       <Content className="flex-1 py-8 px-4">
         <div className="max-w-6xl mx-auto">
