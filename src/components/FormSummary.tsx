@@ -1,15 +1,21 @@
-import React from 'react';
-import { Card, Descriptions, Tag, Button, Space } from 'antd';
+import React,{useState} from 'react';
+import { Card, Descriptions, Tag, Button, Space, message,Modal} from 'antd';
 import { PrinterOutlined, EditOutlined } from '@ant-design/icons';
 import { FormData } from '../types/FormData';
+import axios from './axios';
 
 interface FormSummaryProps {
   data: FormData;
   onEdit: (step: number) => void;
-  onSubmit: () => void;
+  onSubmit: ()=>void;
 }
 
 const FormSummary: React.FC<FormSummaryProps> = ({ data, onEdit, onSubmit }) => {
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const [messageApi,contextHolder] = message.useMessage();
+
   const getBMI = () => {
     const { weight, height } = data.lifestyleInfo;
     if (weight && height) {
@@ -17,15 +23,6 @@ const FormSummary: React.FC<FormSummaryProps> = ({ data, onEdit, onSubmit }) => 
       return bmi.toFixed(1);
     }
     return 'N/A';
-  };
-
-  const getUrgencyColor = (level: string) => {
-    switch (level) {
-      case 'high': return 'red';
-      case 'medium': return 'orange';
-      case 'low': return 'green';
-      default: return 'default';
-    }
   };
 
   return (
@@ -146,10 +143,20 @@ const FormSummary: React.FC<FormSummaryProps> = ({ data, onEdit, onSubmit }) => 
             <Button 
               type="primary" 
               size="large"
-              onClick={onSubmit}
+              name="update"
+              onClick={(e)=>onSubmit('update')}
               className="px-8"
             >
-              提交
+              更新
+            </Button>
+            <Button 
+              type="primary" 
+              size="large"
+              name="submit"
+              onClick={(e)=>onSubmit('submit')}
+              className="px-8"
+            >
+              创建新记录
             </Button>
           </Space>
         </div>

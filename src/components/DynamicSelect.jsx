@@ -35,7 +35,7 @@ const DynamicSelect = ({initialOptions,onChange, style})=>{
 	return(
 		<Space direction="vertical" style={style}>
 			<Select
-				style={{width:200}}
+				style={{width:150}}
 				placeholder="请选择"
 				options={optionsArray}
 				onChange={handleSelectChange}
@@ -43,12 +43,12 @@ const DynamicSelect = ({initialOptions,onChange, style})=>{
 			/>
 			<Space>
 				<Input
-					placeholder='其他'
+					placeholder='其他颜色'
 					onChange={handleInputChange}
-					style={{width:200}}
+					style={{width:150}}
 				/>
 				<Button type="primary" onClick={handleAddOption}>
-					添加
+					增加颜色
 				</Button>
 			</Space>
 			

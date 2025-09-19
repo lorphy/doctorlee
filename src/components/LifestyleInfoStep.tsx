@@ -8,15 +8,11 @@ interface LifestyleInfoStepProps {
 
 }
 
-//const onChange: GetProp<typeof Checkbox.Group, 'onChange'> = (checkedValues) => {
-//  alert(checkedValues[1]);
-//};
 const plainOptions = ['正常', '失眠', '多梦','不易入睡','睡后易醒','惊醒','醒后困乏','头昏','头沉','头晕'];
 
 const LifestyleInfoStep: React.FC<LifestyleInfoStepProps> = ({ data, onDataChange }) => {
   const handleFieldChange = (field: keyof LifestyleInfo, value: any) => {
     onDataChange({ [field]: value });
-    alert(JSON.stringify(data));
   };
 
   return (
@@ -133,7 +129,7 @@ const LifestyleInfoStep: React.FC<LifestyleInfoStepProps> = ({ data, onDataChang
           </Col>
           <Col xs={24} md={12}>
             <Form.Item label="睡眠质量">
-              <Checkbox.Group options={plainOptions} defaultValue={['正常']} onChange={(value) => handleFieldChange('sleepQuality', value)} />
+              <Checkbox.Group options={plainOptions} defaultValue={data.sleepQuality} onChange={(value) => handleFieldChange('sleepQuality', value)} />
             </Form.Item>
           </Col>
         </Row>

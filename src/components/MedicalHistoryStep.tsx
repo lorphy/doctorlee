@@ -13,7 +13,7 @@ const MedicalHistoryStep: React.FC<MedicalHistoryStepProps> = ({ data, onDataCha
   data=data.medicalHistory;
   const handleFieldChange = (field: keyof MedicalHistory, value: string) => {
     onDataChange({ [field]: value });
-    alert(JSON.stringify({ [field]: value }));
+    //alert(JSON.stringify({ [field]: value }));
   };
 
   const illHistoryOptions = ['无','高血压', '心脏搭桥手术', '高血脂','高血糖','多次流产','前列腺手术','痔疮手术','剖腹产'];
@@ -55,13 +55,15 @@ const MedicalHistoryStep: React.FC<MedicalHistoryStepProps> = ({ data, onDataCha
                 rows={4}
                 placeholder="初次发病时间及原因?"
                 value={data.symptomDuration}
+                required
                 onChange={(e) => handleFieldChange('symptomDuration', e.target.value)}
               />
             </Form.Item>
           </Col>
           <Col xs={24} md={12}>
             <Row gutter={8}>
-            <Form.Item label="既往病史、基础史、手术史">
+            <Form.Item label="既往病史、基础史、手术史" required>
+
               <Checkbox.Group options={illHistoryOptions} defaultValue={data.illHistory} onChange={(value) => handleFieldChange('illHistory', value)} />
             </Form.Item>
             </Row>
@@ -70,7 +72,7 @@ const MedicalHistoryStep: React.FC<MedicalHistoryStepProps> = ({ data, onDataCha
               <Form.Item label="肿瘤病史:">
               <Input
                 size="small"
-                placeholder="肺癌 肝癌 ... "
+                placeholder="肺癌 ... (没有可不填)"
                 value={data.tumorHistory}
                 onChange={(e) => handleFieldChange('tumorHistory', e.target.value)}
               />              
@@ -80,7 +82,7 @@ const MedicalHistoryStep: React.FC<MedicalHistoryStepProps> = ({ data, onDataCha
               <Form.Item label="其它手术:">
               <Input
                 size="small"
-                placeholder="... "
+                placeholder="结石... (没有可不填)"
                 value={data.operationHistory}
                 onChange={(e) => handleFieldChange('operationHistory', e.target.value)}
               />              
@@ -96,7 +98,7 @@ const MedicalHistoryStep: React.FC<MedicalHistoryStepProps> = ({ data, onDataCha
         <Card>
           <Row gutter={16}>
           <Col xs={24} md={12}>
-            <Form.Item label="冷热情况？">
+            <Form.Item label="冷热情况？" required>
               <Radio.Group
                 
                 value={data.coldOrHot}
@@ -112,7 +114,7 @@ const MedicalHistoryStep: React.FC<MedicalHistoryStepProps> = ({ data, onDataCha
             </Form.Item>
            </Col> 
           <Col xs={24} md={12}>
-            <Form.Item label="程度？">
+            <Form.Item label="冷热程度？" required>
               <Radio.Group 
                 onChange={(e) => handleFieldChange('coldOrHotExtent', e.target.value)} 
                 value={data.coldOrHotExtent}
@@ -128,7 +130,7 @@ const MedicalHistoryStep: React.FC<MedicalHistoryStepProps> = ({ data, onDataCha
           </Row>
           <Row gutter={16}>
           <Col xs={24} md={8}>
-            <Form.Item label="有无出汗？">
+            <Form.Item label="有无出汗？" required>
               <Radio.Group 
                 onChange={(e) => handleFieldChange('sweatOrNot', e.target.value)} 
                 value={data.sweatOrNot}
@@ -139,8 +141,9 @@ const MedicalHistoryStep: React.FC<MedicalHistoryStepProps> = ({ data, onDataCha
               />
             </Form.Item>
            </Col> 
+          {(data.sweatOrNot=== '有')?(
           <Col xs={24} md={8}>
-            <Form.Item label="程度？">
+            <Form.Item label="出汗程度？">
               <Radio.Group 
                 onChange={(e) => handleFieldChange('sweatExtent', e.target.value)} 
                 value={data.sweatExtent}
@@ -152,6 +155,8 @@ const MedicalHistoryStep: React.FC<MedicalHistoryStepProps> = ({ data, onDataCha
               />
             </Form.Item>
           </Col>
+          ):''}
+          {(data.sweatExtent==='正常出汗' || data.sweatExtent==='动辄出汗')?(
           <Col xs={24} md={8}>
             <Form.Item label="汗出时间？">
               <Radio.Group 
@@ -165,7 +170,9 @@ const MedicalHistoryStep: React.FC<MedicalHistoryStepProps> = ({ data, onDataCha
               />
             </Form.Item>
           </Col>
+          ):''}
           </Row>
+          {(data.sweatOrNot=== '有')?(
           <Row gutter={16}>
             <Col xs={24} md={12}>
               <Form.Item label="汗后怕风？">
@@ -193,6 +200,7 @@ const MedicalHistoryStep: React.FC<MedicalHistoryStepProps> = ({ data, onDataCha
               </Form.Item>
             </Col>
           </Row>
+          ):''}
         </Card>
         </Form.Item>
 
@@ -201,7 +209,7 @@ const MedicalHistoryStep: React.FC<MedicalHistoryStepProps> = ({ data, onDataCha
           <Card>
           <Row gutter={16}>
             <Col xs={24} md={8}>
-              <Form.Item label="鼻塞？">
+              <Form.Item label="有无鼻塞" required>
                   <Radio.Group 
                     onChange={(e) => handleFieldChange('noseStuff', e.target.value)} 
                     value={data.noseStuff}
@@ -213,7 +221,7 @@ const MedicalHistoryStep: React.FC<MedicalHistoryStepProps> = ({ data, onDataCha
               </Form.Item>
             </Col>
             <Col xs={24} md={8}>
-              <Form.Item label="打呼噜？">
+              <Form.Item label="打呼噜？" required>
                   <Radio.Group 
                     onChange={(e) => handleFieldChange('snorkling', e.target.value)} 
                     value={data.snorkling}
@@ -227,7 +235,7 @@ const MedicalHistoryStep: React.FC<MedicalHistoryStepProps> = ({ data, onDataCha
               </Form.Item>
             </Col>
             <Col xs={24} md={8}>
-              <Form.Item label="呼吸暂停？">
+              <Form.Item label="呼吸暂停？" required>
                   <Radio.Group 
                     value={data.inhalePalse}
                     onChange={(e) => handleFieldChange('inhalePalse', e.target.value)} 
@@ -252,9 +260,7 @@ const MedicalHistoryStep: React.FC<MedicalHistoryStepProps> = ({ data, onDataCha
               </Form.Item>
             </Col>
             <Col xs={24} md={12}>
-            {!data.painPart||data.painPart.length===0?
-              <></>
-              :
+            {(data.painPart.length!==0 )?(
               <Form.Item label="疼痛程度:">
                 <Radio.Group
                     value={data.painExtent}
@@ -267,9 +273,10 @@ const MedicalHistoryStep: React.FC<MedicalHistoryStepProps> = ({ data, onDataCha
                       ]}
                   />
               </Form.Item>
-            }
+            ):''}
             </Col>
           </Row>
+        {(data.painPart.length!==0)?(
           <Row gutter={16}>
             <Col xs={24} md={12}>
               <Form.Item label="痛感类型:">
@@ -277,6 +284,7 @@ const MedicalHistoryStep: React.FC<MedicalHistoryStepProps> = ({ data, onDataCha
               </Form.Item>
             </Col>
           </Row>
+        ):''}
         </Card>
         </Form.Item>
 
@@ -285,7 +293,7 @@ const MedicalHistoryStep: React.FC<MedicalHistoryStepProps> = ({ data, onDataCha
           <Row gutter={16} >
             
             <Col xs={24} md={4}>
-              <Form.Item label="胸肋痛:">
+              <Form.Item label="胸肋痛:" required>
                 <Radio.Group 
                     value={data.chestPain}
                     onChange={(e) => handleFieldChange('chestPain', e.target.value)} 
@@ -297,7 +305,7 @@ const MedicalHistoryStep: React.FC<MedicalHistoryStepProps> = ({ data, onDataCha
               </Form.Item>
             </Col>
             <Col xs={24} md={4}>
-              <Form.Item label="腹痛:">
+              <Form.Item label="腹痛:" required>
                 <Radio.Group 
                     value={data.bellyPain}
                     onChange={(e) => handleFieldChange('bellyPain', e.target.value)} 
@@ -309,7 +317,7 @@ const MedicalHistoryStep: React.FC<MedicalHistoryStepProps> = ({ data, onDataCha
               </Form.Item>
             </Col>
             <Col xs={24} md={4}>
-              <Form.Item label="肚子凉:">
+              <Form.Item label="肚子凉:" required>
                 <Radio.Group 
                     value={data.bellyCold}
                     onChange={(e) => handleFieldChange('bellyCold', e.target.value)} 
@@ -321,7 +329,7 @@ const MedicalHistoryStep: React.FC<MedicalHistoryStepProps> = ({ data, onDataCha
               </Form.Item>
             </Col>
             <Col xs={24} md={4}>
-              <Form.Item label="小腹重坠:">
+              <Form.Item label="小腹重坠:" required>
                 <Radio.Group 
                     value={data.bellyHeavy}
                     onChange={(e) => handleFieldChange('bellyHeavy', e.target.value)} 
@@ -337,7 +345,7 @@ const MedicalHistoryStep: React.FC<MedicalHistoryStepProps> = ({ data, onDataCha
           
           <Row gutter={16}>
             <Col xs={24} md={4}>
-              <Form.Item label="腰膝怕冷:">
+              <Form.Item label="腰膝怕冷:" required>
                 <Radio.Group 
                     value={data.waistFearCold}
                     onChange={(e) => handleFieldChange('waistFearCold', e.target.value)} 
@@ -349,7 +357,7 @@ const MedicalHistoryStep: React.FC<MedicalHistoryStepProps> = ({ data, onDataCha
               </Form.Item>
             </Col>
             <Col xs={24} md={4}>
-              <Form.Item label="腰膝酸软:">
+              <Form.Item label="腰膝酸软:" required>
                 <Radio.Group 
                     value={data.waistSour}
                     onChange={(e) => handleFieldChange('waistSour', e.target.value)} 
@@ -361,7 +369,7 @@ const MedicalHistoryStep: React.FC<MedicalHistoryStepProps> = ({ data, onDataCha
               </Form.Item>
             </Col>
             <Col xs={24} md={4}>
-              <Form.Item label="腰沉:">
+              <Form.Item label="腰沉:" required>
                 <Radio.Group 
                     value={data.waistHeavy}
                     onChange={(e) => handleFieldChange('waistHeavy', e.target.value)} 
@@ -375,14 +383,14 @@ const MedicalHistoryStep: React.FC<MedicalHistoryStepProps> = ({ data, onDataCha
           </Row>
           <Row gutter={16}>
             <Col xs={24} md={24}>
-              <Form.Item label="胃部感觉">
+              <Form.Item label="胃部感觉" >
                 <Checkbox.Group options={stomachFeelingOptions} defaultValue={[]} onChange={(value) => handleFieldChange('stomachFeeling', value)} />
               </Form.Item>
             </Col>
           </Row>
           <Row gutter={16}>
             <Col xs={24} md={8}>
-              <Form.Item label="食欲:">
+              <Form.Item label="食欲:" required>
                 <Radio.Group 
                     value={data.appetite}
                     onChange={(e) => handleFieldChange('appetite', e.target.value)} 
@@ -395,7 +403,7 @@ const MedicalHistoryStep: React.FC<MedicalHistoryStepProps> = ({ data, onDataCha
               </Form.Item>
             </Col>
             <Col xs={24} md={8}>
-              <Form.Item label="饮食量:">
+              <Form.Item label="饮食量:" required>
                 <Radio.Group 
                     value={data.intake}
                     onChange={(e) => handleFieldChange('intake', e.target.value)} 
@@ -409,7 +417,7 @@ const MedicalHistoryStep: React.FC<MedicalHistoryStepProps> = ({ data, onDataCha
               </Form.Item>
             </Col>
             <Col xs={24} md={8}>
-              <Form.Item label="饮食喜好:">
+              <Form.Item label="饮食喜好:" required>
                 <Radio.Group 
                     value={data.intakePreference}
                     onChange={(e) => handleFieldChange('intakePreference', e.target.value)} 
@@ -431,8 +439,8 @@ const MedicalHistoryStep: React.FC<MedicalHistoryStepProps> = ({ data, onDataCha
         <Form.Item label="口中感觉、饮水情况">
           <Card>
           <Row gutter={16}>
-            <Col xs={24} md={8}>
-              <Form.Item label="口中感觉:">
+            <Col xs={24} md={4}>
+              <Form.Item label="口中感觉:" required>
                 <Select 
                     onChange={(value) => handleFieldChange('mouthFeeling', value)} 
                     value={data.mouthFeeling}
@@ -447,7 +455,7 @@ const MedicalHistoryStep: React.FC<MedicalHistoryStepProps> = ({ data, onDataCha
               </Form.Item>
             </Col>
             <Col xs={24} md={8}>
-              <Form.Item label="饮水情况:">
+              <Form.Item label="饮水情况:" required>
                 <Radio.Group 
                     value={data.drinking}
                     onChange={(e) => handleFieldChange('drinking', e.target.value)} 
@@ -461,7 +469,7 @@ const MedicalHistoryStep: React.FC<MedicalHistoryStepProps> = ({ data, onDataCha
               </Form.Item>
             </Col>
             <Col xs={24} md={8}>
-              <Form.Item label="咽喉情况:">
+              <Form.Item label="咽喉情况:" required>
                 <Radio.Group 
                     value={data.throat}
                     onChange={(e) => handleFieldChange('throat', e.target.value)} 
@@ -476,7 +484,7 @@ const MedicalHistoryStep: React.FC<MedicalHistoryStepProps> = ({ data, onDataCha
           </Row>
           <Row gutter={16}>
             <Col xs={24} md={24}>
-              <Form.Item label="痰的情况:">
+              <Form.Item label="痰的情况:" >
                 <Checkbox.Group options={phlegmOptions} defaultValue={[]} onChange={(value) => handleFieldChange('phlegm', value)} />
               </Form.Item>
             </Col>
@@ -484,10 +492,10 @@ const MedicalHistoryStep: React.FC<MedicalHistoryStepProps> = ({ data, onDataCha
         </Card>
         </Form.Item>
 
-        <Form.Item label="大小便">
+        <Form.Item label="大小便" required>
           <Card>
           <Row gutter={16}>
-            <Col xs={24} md={4}>
+            <Col xs={24} md={3}>
               <Form.Item label="每日大便次数:">
                 <InputNumber
                 size="small"
@@ -500,7 +508,7 @@ const MedicalHistoryStep: React.FC<MedicalHistoryStepProps> = ({ data, onDataCha
               />
               </Form.Item>
             </Col>
-            <Col xs={24} md={4}>
+            <Col xs={24} md={3}>
               <Form.Item label="形状:">
                 <Select 
                     onChange={(value) => handleFieldChange('shitShape', value)} 
@@ -514,7 +522,7 @@ const MedicalHistoryStep: React.FC<MedicalHistoryStepProps> = ({ data, onDataCha
                 </Select>
               </Form.Item>
             </Col>
-            <Col xs={24} md={4}>
+            <Col xs={24} md={2}>
               <Form.Item label="颜色:">
                 <DynamicSelect 
                     onChange={(value) => handleFieldChange('shitColor', value)} 
@@ -542,7 +550,7 @@ const MedicalHistoryStep: React.FC<MedicalHistoryStepProps> = ({ data, onDataCha
                 <Checkbox.Group options={peeSymptomOptions} defaultValue={[]} onChange={(value) => handleFieldChange('peeSymptom', value)} />
               </Form.Item>
             </Col>
-            <Col xs={24} md={4}>
+            <Col xs={24} md={2}>
               <Form.Item label="夜尿次数:">
                   <InputNumber
                   size="small"

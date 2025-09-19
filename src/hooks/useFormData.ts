@@ -112,8 +112,7 @@ export const useFormData = () => {
       personalInfo: defaultPersonalInfo,
       medicalHistory: defaultMedicalHistory,
       lifestyleInfo: defaultLifestyleInfo,
-      //consultationInfo: defaultConsultationInfo
-    });
+      });
     localStorage.removeItem('consultationFormData');
   };
 
